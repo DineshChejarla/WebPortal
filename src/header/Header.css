@@ -1,0 +1,23 @@
+.header {
+  padding: 20px;
+  background-color: #282828;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.header__logo {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.header__nav {
+  display: flex;
+  gap: 60px; 
+}
+
+.header__link {
+  color: white;
+  text-decoration: none;
+}
