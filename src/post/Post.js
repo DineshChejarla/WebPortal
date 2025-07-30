@@ -1,205 +1,159 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import PostCard from "./PostCard";
-// import "./Post.css";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import Pagination from "../pagination/Pagination";
+import SearchBar from "../searchbar/SearchBar";
+import styles from "./Post.module.scss";
+import FullPostView from "./FullPostView";
+import  Header from "../header/Header";
+import Footer from "../footer/Footer";
 
-// const Post = () => {
-//   const [posts, setPosts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
+const Post = () => {
+  const [allPosts, setAllPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [displayedPosts, setDisplayedPosts] = useState([]);
+  const [currentPost, setCurrentPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(9);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       try {
-//         const response = await axios.get(
-//           "https://jsonplaceholder.typicode.com/posts"
-//         );
-//         setPosts(response.data);
-//       } catch (err) {
-//         setError("Failed to fetch posts");
-//         console.error(err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchPosts();
-//   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (id) {
+          const res = await axios.get(
+            `https://jsonplaceholder.typicode.com/posts/${id}`
+          );
+          setCurrentPost(res.data);
+        } else {
+          const res = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts"
+          );
+          setAllPosts(res.data);
+          setFilteredPosts(res.data);
+        }
+      } catch {
+        console.error("Error fetching posts");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
 
-//   if (loading) return <div className="loading">Loading posts...</div>;
-//   if (error) return <div className="error">{error}</div>;
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = allPosts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.body.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredPosts(filtered);
+      setCurrentPage(1);
+    } else {
+      setFilteredPosts(allPosts);
+    }
+  }, [searchQuery, allPosts]);
 
-//   return (
-//     <div className="post-container">
-//       <h1>Latest Posts</h1>
-//       <div className="posts-grid">
-//         {posts.map((post) => (
-//           <PostCard key={post.id} post={post} />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
+  useEffect(() => {
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    setDisplayedPosts(filteredPosts.slice(indexOfFirstPost, indexOfLastPost));
+  }, [filteredPosts, currentPage, postsPerPage]);
 
-// export default Post;
+  const handleViewDetails = (postId) => {
+    navigate(`/post/${postId}`);
+  };
 
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import PostCard from "./PostCard";
-// import "./Post.css";
+  const handleDelete = (postId) => {
+    setAllPosts((prev) => prev.filter((post) => post.id !== postId));
+  };
 
-// const Post = () => {
-//   const [posts, setPosts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [selectedPost, setSelectedPost] = useState(null);
-//   const [searchTerm, setSearchTerm] = useState("");
+  const handleBack = () => {
+    navigate("/post");
+    setCurrentPost(null);
+  };
 
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       try {
-//         const response = await axios.get(
-//           "https://jsonplaceholder.typicode.com/posts"
-//         );
-//         setPosts(response.data);
-//       } catch (err) {
-//         setError("Failed to fetch posts");
-//         console.error(err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchPosts();
-//   }, []);
+  if (loading)
+    return <p className={styles["post-loading"]}>Loading posts...</p>;
 
-//   const filteredPosts = posts.filter(
-//     (post) =>
-//       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//       post.body.toLowerCase().includes(searchTerm.toLowerCase())
-//   );
+  return (
+    <div className={styles["post-container"]}>
+      {currentPost ? (
+        <FullPostView post={currentPost} onBack={handleBack} />
+      ) : (
+        <>
+        <Header />
+          <h2>Post Management</h2>
+          <SearchBar
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search posts..."
+          />
 
-//   const handleViewDetails = (post) => {
-//     setSelectedPost(post);
-//   };
+          {filteredPosts.length === 0 ? (
+            <p className={styles["post-error"]}>
+              No posts found for "{searchQuery}"
+            </p>
+          ) : (
+            <div className={styles["post-list-container"]}>
+              {displayedPosts.map((post) => (
+                <div
+                  key={post.id}
+                  className={styles["post-card"]}
+                  onClick={() => handleViewDetails(post.id)}
+                >
+                  <h4>{post.title.slice(0, 30)}...</h4>
+                  <p>ID: {post.id}</p>
+                  <p>
+                    <strong>User ID:</strong> {post.userId}
+                  </p>
+                  <div className={styles["post-details"]}>
+                    {post.body.slice(0, 60)}...
+                  </div>
+                  <div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewDetails(post.id);
+                      }}
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(post.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-//   const handleBackToList = () => {
-//     setSelectedPost(null);
-//   };
+          {filteredPosts.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(filteredPosts.length / postsPerPage)}
+              totalItems={filteredPosts.length}
+              itemsPerPage={postsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={() => {}}
+              showPageSizeOptions={false}
+            />
+          )}
+          <Footer />
+        </>
+      )}
+    </div>
+  );
+};
 
-//   if (loading) return <div className="loading-spinner"></div>;
-//   if (error) return <div className="error-message">{error}</div>;
-
-//   return (
-//     <div className="post-management-container">
-//       <header className="app-header">
-//         <h1>📝 Post Management System</h1>
-//         {!selectedPost && (
-//           <div className="search-container">
-//             <input
-//               type="text"
-//               placeholder="Search posts..."
-//               value={searchTerm}
-//               onChange={(e) => setSearchTerm(e.target.value)}
-//               className="search-input"
-//             />
-//             <span className="search-icon">🔍</span>
-//           </div>
-//         )}
-//       </header>
-
-//       <main className="main-content">
-//         {selectedPost ? (
-//           <PostDetail post={selectedPost} onBack={handleBackToList} />
-//         ) : (
-//           <div className="post-grid-container">
-//             <h2>Latest Posts ({filteredPosts.length})</h2>
-//             {filteredPosts.length === 0 ? (
-//               <div className="empty-state">
-//                 <p>No posts found matching your search</p>
-//               </div>
-//             ) : (
-//               <div className="posts-grid">
-//                 {filteredPosts.map((post) => (
-//                   <PostCard
-//                     key={post.id}
-//                     post={post}
-//                     onClick={handleViewDetails}
-//                   />
-//                 ))}
-//               </div>
-//             )}
-//           </div>
-//         )}
-//       </main>
-
-//       <footer className="app-footer">
-//         <p>© {new Date().getFullYear()} Post Management System</p>
-//       </footer>
-//     </div>
-//   );
-// };
-
-// const PostDetail = ({ post, onBack }) => {
-//   // Fetch comments for the post
-//   const [comments, setComments] = useState([]);
-//   const [loadingComments, setLoadingComments] = useState(false);
-
-//   useEffect(() => {
-//     const fetchComments = async () => {
-//       setLoadingComments(true);
-//       try {
-//         const response = await axios.get(
-//           `https://jsonplaceholder.typicode.com/posts/${post.id}/comments`
-//         );
-//         setComments(response.data);
-//       } catch (err) {
-//         console.error("Failed to fetch comments", err);
-//       } finally {
-//         setLoadingComments(false);
-//       }
-//     };
-//     fetchComments();
-//   }, [post.id]);
-
-//   return (
-//     <div className="post-detail">
-//       <button onClick={onBack} className="back-button">
-//         ← Back to Posts
-//       </button>
-
-//       <div className="post-content">
-//         <div className="post-header">
-//           <h2>{post.title.charAt(0).toUpperCase() + post.title.slice(1)}</h2>
-//           <div className="post-meta">
-//             <span>Post ID: {post.id}</span>
-//             <span>User ID: {post.userId}</span>
-//           </div>
-//         </div>
-
-//         <div className="post-body">
-//           <p>{post.body.charAt(0).toUpperCase() + post.body.slice(1)}</p>
-//         </div>
-
-//         <div className="comments-section">
-//           <h3>💬 Comments ({comments.length})</h3>
-//           {loadingComments ? (
-//             <div className="loading-spinner small"></div>
-//           ) : (
-//             <div className="comments-list">
-//               {comments.map((comment) => (
-//                 <div key={comment.id} className="comment-card">
-//                   <div className="comment-header">
-//                     <h4>{comment.name}</h4>
-//                     <span className="comment-email">{comment.email}</span>
-//                   </div>
-//                   <p className="comment-body">{comment.body}</p>
-//                 </div>
-//               ))}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Post;
+export default Post;

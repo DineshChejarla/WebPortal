@@ -1,0 +1,86 @@
+:global {
+  :root {
+    --primary-dark: #2c3e50;
+    --text-color: #333;
+    --dark-gray: #666;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --box-shadow-lg: 0 6px 28px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+  }
+}
+
+.album-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 20px;
+
+  h2 {
+    font-size: 2rem;
+    color: var(--primary-dark);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.album-card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  animation: fadeIn 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--box-shadow-lg);
+
+    img {
+      transform: scale(1.03);
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+    transition: transform 0.3s ease;
+  }
+
+  .card-body {
+    padding: 15px;
+
+    h4 {
+      color: var(--text-color);
+      font-weight: 700;
+      margin: 10px 0 5px;
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+      color: var(--dark-gray);
+      margin-top: 6px;
+    }
+  }
+}
+
+// Optional animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

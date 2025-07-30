@@ -1,0 +1,56 @@
+.header {
+  padding: 20px;
+  background-color: #282828;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    
+    a {
+      color: inherit;
+      text-decoration: none;
+      
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .nav {
+    display: flex;
+    gap: 60px;
+
+    @media (max-width: 768px) {
+      gap: 30px;
+    }
+  }
+
+  .link {
+    color: white;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: #ccc;
+    }
+    
+    &.active {
+      font-weight: bold;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: white;
+      }
+    }
+  }
+}
