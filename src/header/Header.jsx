@@ -26,6 +26,16 @@ const Header = () => {
         <NavLink to="/album" className={styles.link}>
           Album
         </NavLink>
+
+        <div className={styles.dropdown}>
+          <span className={styles.dropdownToggle}>Practices ▾</span>
+          <div className={styles.dropdownContent}>
+            <NavLink to="/counter" className={styles.link}>
+              Counter
+            </NavLink>
+          </div>
+        </div>
+
         <NavLink to="/privacy" className={styles.link}>
           Privacy
         </NavLink>

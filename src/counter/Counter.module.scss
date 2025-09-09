@@ -1,0 +1,77 @@
+.counterCard {
+  padding: 1rem;
+  margin: 0.5rem;
+  border-width: 2px;
+  border-radius: 0.5rem;
+}
+
+.counterTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.counterValue {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.buttonGroup button {
+  padding: 0.25rem 0.75rem;
+  margin-right: 0.5rem;
+  color: white;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+.blue {
+  background-color: #3b82f6;
+}
+
+.blue:hover {
+  background-color: #2563eb;
+}
+
+.green {
+  background-color: #10b981;
+}
+
+.green:hover {
+  background-color: #059669;
+}
+
+.purple {
+  background-color: #8b5cf6;
+}
+
+.purple:hover {
+  background-color: #7c3aed;
+}
+
+.gray {
+  background-color: #6b7280;
+}
+
+.gray:hover {
+  background-color: #4b5563;
+}
+
+.border-blue {
+  border-color: #93c5fd;
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.border-green {
+  border-color: #a7f3d0;
+  background-color: #ecfdf5;
+  color: #064e3b;
+}
+
+.border-purple {
+  border-color: #ddd6fe;
+  background-color: #f5f3ff;
+  color: #4c1d95;
+}

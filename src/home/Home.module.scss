@@ -1,0 +1,168 @@
+.home {
+  background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+
+  // 🌟 Hero Section
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 10%;
+    flex-wrap: wrap;
+    gap: 40px;
+
+    .textContent {
+      flex: 1;
+      max-width: 500px;
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #ff8c00, #ff3d7f);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+        color: #ccc;
+        line-height: 1.7;
+      }
+
+      .ctaButton {
+        padding: 12px 28px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #ff8c00, #ff3d7f);
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: scale(1.08);
+          box-shadow: 0 8px 20px rgba(255, 61, 127, 0.5);
+        }
+      }
+    }
+
+    .imageContent {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+
+      img {
+        max-width: 100%;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+
+  // ⚡ Features Section
+  .features {
+    text-align: center;
+    padding: 60px 10%;
+
+    h2 {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .featureGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .featureCard {
+      background: #222;
+      padding: 30px;
+      border-radius: 14px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      .icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #ff3d7f;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #bbb;
+      }
+
+      &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  // 🎯 Call-to-Action
+  .ctaSection {
+    text-align: center;
+    padding: 70px 10%;
+    background: linear-gradient(135deg, #ff3d7f, #ff8c00);
+    border-radius: 16px;
+    margin: 50px auto;
+    max-width: 900px;
+
+    h2 {
+      font-size: 2.4rem;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+    }
+
+    .ctaButtonLarge {
+      padding: 14px 32px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      background: #fff;
+      color: #ff3d7f;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.08);
+        background: #f1f1f1;
+      }
+    }
+  }
+
+  // 📱 Responsive Adjustments
+  @media (max-width: 992px) {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+
+      .textContent {
+        max-width: 100%;
+      }
+    }
+  }
+}
